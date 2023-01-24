@@ -156,7 +156,7 @@ if __name__ == "__main__":
     left = -4
     right = 7
     function_string = "(x**3) - (4*(x**2)) - 10"
-    bisection_method(left, right, function_string)
+    #bisection_method(left, right, function_string)
     
     initial_approximation: float = -4 # what does this need to be?
     tolerance: float = .001
