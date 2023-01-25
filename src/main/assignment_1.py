@@ -5,21 +5,21 @@ import math
 #       a) 0 | 10000000111 | 1110101110010000000000000000000000000000000000000000
 # formula to use: (-1)^s*2^c-1027*(1 + f)
 
-def binary_double_precision():
+def double_precision():
     # calculating the sign (s)
-    binary_s = 0
-    print(binary_s)
+    s = 0
+    # print(s)
 
     # calculating the exponent (c)
-    binary_exponent = 10000000111
+    exponent = 10000000111
     c = 0
     i = 0
-    while(binary_exponent != 0):
-        exp = binary_exponent % 10
+    while(exponent != 0):
+        exp = exponent % 10
         c = c + exp * pow(2, i)
-        exponent = binary_exponent // 10
+        exponent = exponent // 10
         i += 1
-    print(c)
+    # print(c)
 
     # calculating the fraction (f)
     binary_fraction = str(1110101110010000000000000000000000000000000000000000)
@@ -28,10 +28,10 @@ def binary_double_precision():
     for item in binary_fraction:
         f = f + int(item) * ((1/2)**i)
         i += 1
-    print(f)
+    # print(f)
 
     # formula for converting binary to decimal (n)
-    n = ((-1)**binary_s)*(2**(c - 1023))*(1 + f)
+    n = ((-1)**s)*(2**(c - 1023))*(1 + f)
     print(f"{n:.5f}")
     print("\n")
 
@@ -49,7 +49,20 @@ def binary_double_precision():
     
     # Question 4: Compute the absolute and relative error with the exact value form question 1 and its 3 digit rounding
 
+    # redefine n because I changed it for questions 2 and 3:
+    n = ((-1)**s)*(2**(c-1023))*(1 + f)
 
+    def absolute_error(value: float, y: int):
+        return (abs(value - round(value, ndigits =y)))
+    
+    print(absolute_error(n, 3))
+    print("\n")
+    
+    def relative_error(value: float, y: int):
+        return(abs(value - round(value, ndigits = y))) / (abs(value))
+
+    print(relative_error(n, 3))
+    print("\n")
 
 # Question 5: What is the minimum number of terms needed to computer f(1) with error <10^-4?
 
@@ -73,7 +86,7 @@ def series_error():
 
 # CONTINUE WORKING ON THIS -- DEFINITELY NOT RIGHT!!!!!
 
-def bisection_method(left: float, right: float, function_string: str):
+def bisection_method(left: float, right: float, function_string):
     x = left
     initial_left = eval(function_string)
     x = right
@@ -82,83 +95,74 @@ def bisection_method(left: float, right: float, function_string: str):
     if initial_left * initial_right >= 0:
         print("Invalid inputs. Not on opposite sides of the function")
         return
-
+    
     tolerance: float = .001
     difference: float = right - left
 
-    max_iterations: int = 20 # change later - this is just for now
-    iteration_counter: int = 0
-    function_a = "x**3 + 4*x**2 - 10"
-    while(difference >= tolerance and iteration_counter <= max_iterations):
-        iteration_counter += 1
-        
+    while(difference >= tolerance):
+
         mid_point = (left + right) / 2
         x = mid_point
         evaluated_midpoint = eval(function_string)
-
+        
         if evaluated_midpoint == 0.0:
             break
-
+    
         x = left
         evaluated_left_point = eval(function_string)
 
         first_conditional: bool = evaluated_left_point < 0 and evaluated_midpoint > 0
         second_conditional: bool = evaluated_left_point > 0 and evaluated_midpoint < 0
 
-        if first_conditional or second_conditional:
+        if first_conditional or second_conditional == True:
             right = mid_point
         else:
             left = mid_point
+
+        difference = abs(right - left)
+        print(difference)
+
+def func(x):
+    return x*x*x - 4*x*x - 10
+
+def bisect(f, a, b, tol):
+    if np.sign(f(a)) == np.sign(f(b)):
+        raise Exception("The scalars a and b do not bound a root")
+
+    m = (a + b) / 2
+    if np.abs(f(m)) < tol:
+        return m
+    elif np.sign(f(a)) == np.sign(f(m)):
+        return bisect(f, m, b, tol)
+    elif np.sign(f(b)) == np.sign(f(m)):
+        return bisect(f, a, m, tol)
+    
+def my_newton(f, df, x0, tol):
+    if abs(f(x0)) < tol:
+        return x0
+    else:
+        ...
+f = lambda x: x*x*x - 4*x*x - 10
+f_prime = lambda x: 3*x*x - 8*x       
         
-        diff = abs(right - left)
-
-def custom_derivative(value):
-    return(3 * value * value) - (8 * value) # should be right - check with others
-
-def newton_raphson_method(initial_approximation: float, tolerance: float, sequence: str):
-    iteration_counter = 0
-
-    # finds f
-    x = initial_approximation
-    f = eval(sequence)
-
-    # finds f'
-    f_prime = custom_derivative(initial_approximation)
-
-    function_over_derivative: float = f / f_prime
-    while(abs(function_over_derivative) >= tolerance):
-        # finds f
-        x = initial_approximation
-        f = eval(sequence)
-
-        # finds f'
-        f_prime = custom_derivative(initial_approximation)
-
-        # division operation
-        function_over_derivative = f / f_prime
-
-        # subtraction operation
-        initial_approximation -= function_over_derivative
-        iteration_counter += 1
-
-    print(f"The iteration {iteration_counter} has an error threshold of: {function_over_derivative}")
-    print(iteration_counter)
 
 if __name__ == "__main__":
-    # question 1 - 4:
-    binary_double_precision()
+    # questions 1 - 4:
+    double_precision()
 
     #question 5:
     series_error()
     print("\n")
 
-    # question 6:
-    left = -4
-    right = 7
+    #question 6:
+
+    # (a) bisection method
+    left = -2
+    right = 5
     function_string = "(x**3) - (4*(x**2)) - 10"
     #bisection_method(left, right, function_string)
-    
-    initial_approximation: float = -4 # what does this need to be?
-    tolerance: float = .001
-    sequence: str = "(x**3) + 4*(x**2) - 10"
-    #print(newton_raphson_method(initial_approximation, tolerance, sequence))
+
+    # (b) newton raphson method
+    #print(bisect(f, -4, 7, .001))
+    #print()
+    #print(my_newton(f, f_prime, 7, .001))
