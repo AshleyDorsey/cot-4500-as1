@@ -5,7 +5,7 @@ import math
 #       a) 0 | 10000000111 | 1110101110010000000000000000000000000000000000000000
 # formula to use: (-1)^s*2^c-1027*(1 + f)
 
-def double_precision():
+def binary_double_precision():
     # calculating the sign (s)
     s = 0
     # print(s)
@@ -50,21 +50,27 @@ def double_precision():
     # Question 4: Compute the absolute and relative error with the exact value form question 1 and its 3 digit rounding
 
     # redefine n because I changed it for questions 2 and 3:
-    n = ((-1)**s)*(2**(c-1023))*(1 + f)
 
-    def absolute_error(value: float, y: int):
-        return (abs(value - round(value, ndigits =y)))
+    def abs_err(n, n_bar):
+        return abs(n - n_bar)
     
-    print(absolute_error(n, 3))
-    print("\n")
+    def rel_err(n, n_bar):
+        if n == 0:
+            return 0
+        else:
+            return ((abs_err(n, n_bar)) / abs(n))
     
-    def relative_error(value: float, y: int):
-        return(abs(value - round(value, ndigits = y))) / (abs(value))
+    def absolute_and_relative_error():
+        n = ((-1)**s)*(2**(c-1023))*(1 + f)
+        round_round = round(n, ndigits = 3)
+        print(abs_err(n, round_round))
+        print(rel_err(n, round_round))
+        return
 
-    print(relative_error(n, 3))
+    absolute_and_relative_error()
     print("\n")
 
-# Question 5: What is the minimum number of terms needed to computer f(1) with error <10^-4?
+# Question 5: What is the minimum number of terms needed to computer f(1) with error <10^-4? 
 
 def series_error():
     def infinite_series(x, k: int):
@@ -76,79 +82,39 @@ def series_error():
     while(abs(infinite_series(1, iteration_counter)) > minimum_error):
         iteration_counter += 1
 
-    print(iteration_counter)
+    iteration_counter = iteration_counter - 1
+    print(iteration_counter) 
 
 # Question 6: Determine the number of iterations necessary to solve f(x) = x^3 + 4x^2 - 10 = 0 with accuracy 10^-4 
 # using a = -4 and b = 7.
 #       b) Using the bisection method
-#       c) Using the newton Raphson method
+#       c) Using the newton Raphson method - should be 37
 
 
-# CONTINUE WORKING ON THIS -- DEFINITELY NOT RIGHT!!!!!
+def bisection_method(a: int, b: int, tolerance: float):
+    y = b - a
+    x = math.log(y, 10)
+    z = math.log(tolerance, 10)
+    equation = (x - z) / (math.log(2, 10))
+    print(math.ceil(equation))
 
-def bisection_method(left: float, right: float, function_string):
-    x = left
-    initial_left = eval(function_string)
-    x = right
-    initial_right = eval(function_string)
+def newton_raphson_method(funct, funct_deriv, initial_approximation, tolerance):
+    answer = funct(initial_approximation) / funct_deriv(initial_approximation)
+    x = initial_approximation
 
-    if initial_left * initial_right >= 0:
-        print("Invalid inputs. Not on opposite sides of the function")
-        return
+    iteration_count = 1
     
-    tolerance: float = .001
-    difference: float = right - left
+    while(abs(answer) >= tolerance):
+        x = x - answer
+        iteration_count += 1
+        answer = funct(x) / funct_deriv(x)
 
-    while(difference >= tolerance):
+    return iteration_count
 
-        mid_point = (left + right) / 2
-        x = mid_point
-        evaluated_midpoint = eval(function_string)
-        
-        if evaluated_midpoint == 0.0:
-            break
-    
-        x = left
-        evaluated_left_point = eval(function_string)
-
-        first_conditional: bool = evaluated_left_point < 0 and evaluated_midpoint > 0
-        second_conditional: bool = evaluated_left_point > 0 and evaluated_midpoint < 0
-
-        if first_conditional or second_conditional == True:
-            right = mid_point
-        else:
-            left = mid_point
-
-        difference = abs(right - left)
-        print(difference)
-
-def func(x):
-    return x*x*x - 4*x*x - 10
-
-def bisect(f, a, b, tol):
-    if np.sign(f(a)) == np.sign(f(b)):
-        raise Exception("The scalars a and b do not bound a root")
-
-    m = (a + b) / 2
-    if np.abs(f(m)) < tol:
-        return m
-    elif np.sign(f(a)) == np.sign(f(m)):
-        return bisect(f, m, b, tol)
-    elif np.sign(f(b)) == np.sign(f(m)):
-        return bisect(f, a, m, tol)
-    
-def my_newton(f, df, x0, tol):
-    if abs(f(x0)) < tol:
-        return x0
-    else:
-        ...
-f = lambda x: x*x*x - 4*x*x - 10
-f_prime = lambda x: 3*x*x - 8*x       
-        
 
 if __name__ == "__main__":
-    # questions 1 - 4:
-    double_precision()
+    # questions 1 - 4: question 4 needs some help
+    binary_double_precision()
 
     #question 5:
     series_error()
@@ -157,12 +123,15 @@ if __name__ == "__main__":
     #question 6:
 
     # (a) bisection method
-    left = -2
-    right = 5
-    function_string = "(x**3) - (4*(x**2)) - 10"
-    #bisection_method(left, right, function_string)
+    a = -2 # (also left)
+    b = 5  # (also right)
+    tolerance: float = 10**-4
+    bisection_method(a, b, tolerance)
+    print("\n")
 
-    # (b) newton raphson method
-    #print(bisect(f, -4, 7, .001))
-    #print()
-    #print(my_newton(f, f_prime, 7, .001))
+    # (b) newton raphson method - getting a WAY too big number
+    initial_approximation: float = 7
+    tolerance: float = .0001
+    function_of_x = lambda x: (x**3) + (4*(x**2)) - 10
+    derivative_of_function_x = lambda x: (3*(x**2)) + 8*x
+    print(newton_raphson_method(function_of_x, derivative_of_function_x, initial_approximation, tolerance))
