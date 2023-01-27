@@ -47,9 +47,9 @@ def binary_double_precision():
     # Question 2: Repeat question 1 using three-digit chopping arithmetic
     
     # multiply by 10^-3 to get decimals.
-    n = n * (10**-3)
     # use the math.floor function to get the rounded down version. Multiply by 1000 so that it keeps the desired numbers.
-    print((math.floor(n * 1000))/1000)
+    n = n * 10**-3
+    print((math.floor(n*1000)) / 1000)
     print("\n")
     
     #Question 3: Repeat question 1 using three-digit rounding arithmetic
