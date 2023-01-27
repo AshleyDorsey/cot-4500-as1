@@ -1,5 +1,6 @@
 # import libraries as necessary
 
+import decimal
 import numpy as np
 import math
 
@@ -48,8 +49,8 @@ def binary_double_precision():
     
     # multiply by 10^-3 to get decimals.
     # use the math.floor function to get the rounded down version. Multiply by 1000 so that it keeps the desired numbers.
-    n = n * 10**-3
-    print((math.floor(n*1000)) / 1000)
+    #n = n * 10**-3
+    print(float(math.floor(n)))
     print("\n")
     
     #Question 3: Repeat question 1 using three-digit rounding arithmetic
@@ -57,21 +58,21 @@ def binary_double_precision():
     # add .0005 to follow the rounding process.
     n = n + 0.0005
     # round this to 3 digits, it will round to what is necessary.
-    print(round(n, ndigits = 3))
+    print(float(round(n)))
     print("\n")
     
     # Question 4: Compute the absolute and relative error with the exact value form question 1 and its 3 digit rounding
 
-    # function to get the absolute error value.
+    # function to get the absolute error value. Use the decimal library to print out the right amount of decimal places.
     def abs_err(n, n_bar):
-        return abs(n - n_bar)
+        return abs((decimal.Decimal(n)) - (decimal.Decimal(n_bar)))
     
     # function to get the relative error value.
     def rel_err(n, n_bar):
         if n == 0:
             return 0
         else:
-            return ((abs_err(n, n_bar)) / n)
+            return ((abs_err(n, n_bar)) / abs(decimal.Decimal(n)))
     
     # function to define values and print final error values.
     def absolute_and_relative_error():
