@@ -24,6 +24,6 @@ Question 6 has two parts, both of which are used to determine the number of iter
 
 - Install numpy by typing into the terminal "pip install numpy". However, if this is already installed, you may not need to install again.
 
-- At the top of the program it is necessary to import both the "math" library and "numpy" for this.
+- At the top of the program it is necessary to import the "math", "decimal", and "numpy" library for this.
 
 - In the command line, enter "python assignment_1.py" and then hit ENTER to run.
