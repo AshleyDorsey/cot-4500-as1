@@ -42,24 +42,24 @@ def binary_double_precision():
     # formula for converting binary to decimal (n)
     n = ((-1)**s)*(2**(c - 1023))*(1 + f)
     # use rounding to get to the answer desired: 491.5625
-    print(f"{n:.4f}")
-    print("\n")
+    print(f"{n:.4f}\n")
+    #print("\n")
 
     # Question 2: Repeat question 1 using three-digit chopping arithmetic
     
     # multiply by 10^-3 to get decimals.
     # use the math.floor function to get the rounded down version. Multiply by 1000 so that it keeps the desired numbers.
     #n = n * 10**-3
-    print(float(math.floor(n)))
-    print("\n")
+    print(float(math.floor(n)), "\n")
+    #print("\n")
     
     #Question 3: Repeat question 1 using three-digit rounding arithmetic
     
     # add .0005 to follow the rounding process.
     n = n + 0.0005
     # round this to 3 digits, it will round to what is necessary.
-    print(float(round(n)))
-    print("\n")
+    print(float(round(n)), "\n")
+    #print("\n")
     
     # Question 4: Compute the absolute and relative error with the exact value form question 1 and its 3 digit rounding
 
@@ -81,12 +81,12 @@ def binary_double_precision():
         # create the approximated value again (same as question 3)
         round_round = round(n)
         print(abs_err(n, round_round))
-        print(rel_err(n, round_round))
+        print(rel_err(n, round_round), "\n")
         return
 
     # call final function so it will print the values in output.
     absolute_and_relative_error()
-    print("\n")
+    #print("\n")
 
 # Question 5: What is the minimum number of terms needed to computer f(1) with error <10^-4? 
 
@@ -108,7 +108,7 @@ def series_error():
 
     # this is the fix...subtract the original 1.
     iteration_counter = iteration_counter - 1
-    print(iteration_counter) 
+    print(iteration_counter, "\n") 
 
 # Question 6: Determine the number of iterations necessary to solve f(x) = x^3 + 4x^2 - 10 = 0 with accuracy 10^-4 
 # using a = -4 and b = 7.
@@ -126,7 +126,7 @@ def bisection_method(a: int, b: int, tolerance: float):
     # subtract the above logs from each other and then divide by log base 10 of 2.
     equation = (x - z) / (math.log(2, 10))
     # round up because you can't have half of an iteration.
-    print(math.ceil(equation))
+    print(math.ceil(equation), "\n")
 
 # function for newton raphson method using the function, derivative, initial approximation, and tolerance.
 def newton_raphson_method(funct, funct_deriv, initial_approximation, tolerance):
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
     #question 5:
     series_error()
-    print("\n")
+    #print("\n")
 
     #question 6:
 
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     # set the tolerance
     tolerance: float = .0001
     bisection_method(a, b, tolerance)
-    print("\n")
+    #print("\n")
 
     # (b) newton raphson method - getting a WAY too big number
     # set the initial approximation
@@ -179,4 +179,4 @@ if __name__ == "__main__":
     function_of_x = lambda x: (x**3) + (4*(x**2)) - 10
     # set up the derivative
     derivative_of_function_x = lambda x: (3*(x**2)) + 8*x
-    print(newton_raphson_method(function_of_x, derivative_of_function_x, initial_approximation, tolerance))
+    print(newton_raphson_method(function_of_x, derivative_of_function_x, initial_approximation, tolerance), "\n")
